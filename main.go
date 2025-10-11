@@ -35,9 +35,37 @@ func HandleGetTask(w http.ResponseWriter, r *http.Request) {
 	encoder.Encode(taskList)
 }
 
+// Create Task
+func HandleCreateTask(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+	if r.Method != "POST" {
+		//do error through
+		http.Error(w, "Please Sent POST Request", 400)
+		return
+	}
+	var newTask Task
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&newTask)
+
+	if err != nil {
+		fmt.Println("Error")
+		http.Error(w, "Please give  me a Vaild json", 400)
+		return
+	}
+	newTask.ID = len(taskList) + 1
+	taskList = append(taskList, newTask)
+
+	// return api response
+	encode := json.NewEncoder(w)
+	encode.Encode(newTask)
+
+}
+
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/v1/task", HandleGetTask)
+	mux.HandleFunc("/api/v1/create-task", HandleCreateTask)
 
 	//Server Config
 	fmt.Println("Server is running on port, 3000")
