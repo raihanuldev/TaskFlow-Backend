@@ -20,6 +20,10 @@ var taskList []Task
 // Handle Add Task
 
 func HandleGetTask(w http.ResponseWriter, r *http.Request) {
+
+	// Header Config set
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
 	// Request Method Catch
 	if r.Method != "GET" {
 		//do error through
