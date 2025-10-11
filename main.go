@@ -5,6 +5,16 @@ import (
 	"net/http"
 )
 
+// Task Struct
+
+type Task struct{
+	Id int
+	TaskName string
+	
+}
+
+
+
 // Handle Add Task
 
 func HandleAddTask(w http.ResponseWriter, r *http.Request) {
